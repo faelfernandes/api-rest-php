@@ -1,5 +1,7 @@
 <?php
 
+header('Content-Type: application/json');
+
 require_once '../vendor/autoload.php';
 
 $path = ltrim($_SERVER['REQUEST_URI'], '/');
@@ -17,9 +19,13 @@ if ($elements[0]) {
     try {
       $response = call_user_func_array(array(new $controller, $method), $elements);
       
+      http_response_code(200);
       echo json_encode(array('status' => 'success', 'data' => $response));
+      exit;
     } catch (\Exception $e) {
-      //
+      http_response_code(404);
+      echo json_encode(array('status' => 'error', 'data' => $e->getMessage()), JSON_UNESCAPED_UNICODE);
+      exit;
     }
   }
 }
