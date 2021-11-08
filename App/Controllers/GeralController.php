@@ -9,7 +9,7 @@ class GeralController
     if ($id) {
       return Geral::listarPorId($id);
     } else {
-      return Cartao::listarGeral();
+      return Geral::listarGeral();
     }
   }
 }
