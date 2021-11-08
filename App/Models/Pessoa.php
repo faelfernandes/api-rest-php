@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+use App\Conexao;
 
 class Pessoa
 {
@@ -8,10 +9,8 @@ class Pessoa
 
   public static function listarPessoa(int $id)
   {
-    $connPdo = new \PDO(DBDRIVE . ': host=' . DBHOST . '; dbname=' . DBNAME, DBUSER, DBPASS);
-    
     $sql = 'SELECT * FROM ' . self::$table . ' WHERE id = :id';
-    $stmt = $connPdo->prepare($sql);
+    $stmt = Conexao::conexao()->prepare($sql);
     $stmt->bindValue(':id', $id);
     $stmt->execute();
 
@@ -24,10 +23,8 @@ class Pessoa
 
   public static function listarPessoas()
   {
-    $connPdo = new \PDO(DBDRIVE . ': host=' . DBHOST . '; dbname=' . DBNAME, DBUSER, DBPASS);
-    
     $sql = 'SELECT * FROM ' . self::$table;
-    $stmt = $connPdo->prepare($sql);
+    $stmt = Conexao::conexao()->prepare($sql);
     $stmt->execute();
 
     if ($stmt->rowCount() > 0) {

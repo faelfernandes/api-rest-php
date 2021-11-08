@@ -2,16 +2,16 @@
 
 namespace App\Models;
 
+use App\Conexao;
+
 class Geral
 {
   private static $table = 'cartao';
 
   public static function listarPorId(int $id)
   {
-    $connPdo = new \PDO(DBDRIVE . ': host=' . DBHOST . '; dbname=' . DBNAME, DBUSER, DBPASS);
-    // SELECT * FROM usuario AS U INNER JOIN ' . self::$table . ' AS C ON C.usuario_id = U.id WHERE U.id = :id ORDER BY U.id ASC
     $sql = 'SELECT * FROM usuario AS U INNER JOIN ' . self::$table . ' AS C ON C.usuario_id = U.id WHERE U.id = :id ORDER BY U.id ASC';
-    $stmt = $connPdo->prepare($sql);
+    $stmt = Conexao::conexao()->prepare($sql);
     $stmt->bindValue(':id', $id);
     $stmt->execute();
 
@@ -24,10 +24,8 @@ class Geral
 
   public static function listarGeral()
   {
-    $connPdo = new \PDO(DBDRIVE . ': host=' . DBHOST . '; dbname=' . DBNAME, DBUSER, DBPASS);
-
     $sql = 'SELECT * FROM usuario AS U INNER JOIN ' . self::$table . ' AS C ON C.usuario_id = U.id ORDER BY U.id ASC';
-    $stmt = $connPdo->prepare($sql);
+    $stmt = Conexao::conexao()->prepare($sql);
     $stmt->execute();
 
     if ($stmt->rowCount() > 0) {

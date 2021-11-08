@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+use App\Conexao;
 
 class Cartao
 {
@@ -8,9 +9,8 @@ class Cartao
 
   public static function listarCartao(int $id)
   {
-    $connPdo = new \PDO(DBDRIVE . ': host=' . DBHOST . '; dbname=' . DBNAME, DBUSER, DBPASS);
     $sql = 'SELECT U.id, U.nome, U.cpf, U.data_de_nascimento, C.bandeira, C.numero, C.expiracao, C.cvv FROM ' . self::$table . ' AS C INNER JOIN usuario AS U ON C.usuario_id = U.id  WHERE U.id = :id ORDER BY U.id ASC';
-    $stmt = $connPdo->prepare($sql);
+    $stmt = Conexao::conexao()->prepare($sql);
     $stmt->bindValue(':id', $id);
     $stmt->execute();
 
@@ -23,10 +23,8 @@ class Cartao
 
   public static function listarCartoes()
   {
-    $connPdo = new \PDO(DBDRIVE . ': host=' . DBHOST . '; dbname=' . DBNAME, DBUSER, DBPASS);
-
     $sql = 'SELECT U.id, U.nome, U.cpf, U.data_de_nascimento, C.bandeira, C.numero, C.expiracao, C.cvv FROM ' . self::$table . ' AS C INNER JOIN usuario AS U ON C.usuario_id = U.id ORDER BY U.id ASC';
-    $stmt = $connPdo->prepare($sql);
+    $stmt = Conexao::conexao()->prepare($sql);
     $stmt->execute();
 
     if ($stmt->rowCount() > 0) {
